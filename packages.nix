@@ -32,5 +32,6 @@
     numix-icon-theme-circle
     arc-theme
     virtmanager
+    keepass
   ];
 }
