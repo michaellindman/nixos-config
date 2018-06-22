@@ -14,7 +14,6 @@
     python3
     git
     gnumake
-    gnome3.gnome-screenshot
     nix-repl
     gcc
     git
@@ -32,6 +31,21 @@
     numix-icon-theme-circle
     arc-theme
     virtmanager
-    keepass
+    pavucontrol
+    vscode
+    x264
+    openh264
+    mediastreamer-openh264
+    tmux
+    meld
+    keepassxc
+    discord
+    screenfetch
+    xorg.xwininfo
+    androidsdk
+    steam
+    nextcloud-client
+    screen
+    cmus
   ];
 }

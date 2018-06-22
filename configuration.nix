@@ -13,6 +13,8 @@
       ./users.nix
       ./virtualisation.nix
       ./packages.nix
+      ./ssh.nix
+      ./nix-containers.nix
     ];
 
   boot = {
@@ -22,10 +24,26 @@
       efi.canTouchEfiVariables = true;
     };
 
-    kernelParams = [ "rd.driver.blacklist=nouveau" "modprobe.blacklist=nouveau" "rd.driver.blacklist=nvidia" "rd.driver.blacklist=nvidiafb" "iommu=1" "amd_iommu=on" "rd.driver.pre=vfio-pci" ];
-    blacklistedKernelModules = [ "nvidia" ];
-    initrd.kernelModules = [ "vfio_pci" "vfio" "vfio_iommu_type1" "vfio_virqfd" ];
-    extraModprobeConfig = ''options vfio-pci id=10de:1244,10de:0bee'';
+    kernelPackages = pkgs.linuxPackages_4_16;
+    kernelParams = [ "iommu=1" "amd_iommu=on" "pcie_acs_override=downstream,multifunction" "rd.driver.pre=vfio-pci" ];
+    blacklistedKernelModules = [ "nvidia" "nouveau" ];
+    kernelModules = [ "kvm-amd" "vfio_virqfd" "vfio_pci" "vfio_iommu_type1" "vfio" ];
+    postBootCommands = "/usr/bin/vfio-pci-override.sh";
+    extraModprobeConfig = "install vfio-pci /usr/bin/vfio-pci-override.sh";
+  };
+
+  # Apply ACS patch to kernel
+  nixpkgs.config.packageOverrides = pkgs: {
+    linux_4_16 = pkgs.linux_4_16.override {
+      kernelPatches = pkgs.linux_4_16.kernelPatches ++ [
+        { name = "acs";
+          patch = pkgs.fetchurl {
+            url = "https://lelrek.tk/s/BF8YZJmaMTA6PCH/download";
+            sha256 = "5b952a2ea634d14e21806b11dfa6f937c9faab5a977373994430106e70809e15";
+          };
+        }
+      ];
+    };
   };
 
   # Select internationalisation properties.
@@ -45,9 +63,6 @@
   # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
 
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
