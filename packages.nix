@@ -47,5 +47,7 @@
     nextcloud-client
     screen
     cmus
+    nfs-utils
+    gv
   ];
 }
