@@ -15,6 +15,7 @@
     git
     gnumake
     nix-repl
+    nix-index
     gcc
     git
     (import ./vim.nix)
@@ -48,6 +49,8 @@
     screen
     cmus
     nfs-utils
-    gv
+    smartmontools
+    openssl
+    unzip
   ];
 }
