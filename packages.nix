@@ -9,7 +9,6 @@
     firefox
     chromium
     alacritty
-    rofi
     python2
     python3
     git
@@ -19,13 +18,9 @@
     gcc
     git
     (import ./vim.nix)
-    i3blocks
-    feh
     usbutils
     pciutils
     sysstat
-    arandr
-    lxappearance
     htop
     python36Packages.glances
     numix-icon-theme
