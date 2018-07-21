@@ -25,6 +25,8 @@
       efi.canTouchEfiVariables = true;
     };
 
+    supportedFilesystems = [ "zfs" ];
+
     kernelPackages = pkgs.linuxPackages_4_17;
     kernelParams = [ "amd_iommu=on" "pcie_acs_override=downstream,multifunction" ];
     
@@ -33,7 +35,7 @@
 
     postBootCommands = ''
       DEVS="0000:0f:00.0 0000:0f:00.1"
-
+    
       for DEV in $DEVS; do
         echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
       done
@@ -41,7 +43,7 @@
    '';
   };
 
-  #Apply ACS patch to kernel
+  # Apply ACS patch to kernel
   nixpkgs.config.packageOverrides = pkgs: {
     linux_4_17 = pkgs.linux_4_17.override {
       kernelPatches = pkgs.linux_4_17.kernelPatches ++ [
@@ -53,6 +55,10 @@
         }
       ];
     };
+  };
+
+  environment.shellAliases = {
+    ls = "exa";
   };
 
   # Select internationalisation properties.

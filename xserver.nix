@@ -31,4 +31,5 @@
   };
 
   hardware.opengl.driSupport32Bit = true;
+  services.xmr-stak.cudaSupport = true;
 }

@@ -3,6 +3,7 @@
 {
   networking = {
     hostName = "nixos";
+    hostId = "43a989cc";
 
     networkmanager = {
       enable = true;
